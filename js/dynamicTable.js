@@ -22,6 +22,16 @@ $(document).ready(function (){
 				var keycode = event.which;
 				if(keycode == '13'){
 					$(this).parent().parent().next().find("[name='Object_ID']").focus();
+					var name = $(this).attr('name');
+					alert(name);
+				}
+				if(keycode == '38'){
+					var name = $(this).attr('name');
+					$(this).parent().parent().prev().find("[name='"+name+"']").focus();
+				}
+				if(keycode == '40'){
+					var name = $(this).attr('name');
+					$(this).parent().parent().next().find("[name='"+name+"']").focus();
 				}
 			});
 		}

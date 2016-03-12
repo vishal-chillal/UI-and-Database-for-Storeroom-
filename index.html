@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title> UI Table </title>
@@ -6,13 +7,17 @@
 		<script src="js/dynamicTable.js"></script>
 	</head>
 	<body>
+
+		<?php
+		echo "Hello World!";
+		?>  
 		<p> This is our ducking page </p>
 		<table id="idTable">
 			<tr id="header_row">
-				<th> Sr_No</th>
-				<th> Object_ID</th>
-				<th> Object_Lable</th>
-				<th> Object_Properties</th>
+				<th><input type"text" name"Sr_No"></th>
+				<th><input type"text" name"Object_ID"></th>
+				<th><input type"text" name"Object_Lable"></th>
+				<th><input type"text" name"Object_Properties"></th>
 			</tr>
 			<tr>
 				<td><input type="text" name="Sr_No" disabled></td>
@@ -21,5 +26,9 @@
 				<td><input type="text" name="Object_Properties"></td>
 			</tr>
 		</table>
+		<?php
+		echo "duck";
+		?>
+
 	</body>
 </html>

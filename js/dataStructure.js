@@ -1,30 +1,31 @@
 rowDict = []
 countRow = 0
 
-function addRow(rowDict,Object_ID,Object_Lable,Object_Properties)
+function addRow(rowDict,arr)
 {
 	rowDict.push({
-		kSr_No : countRow,
-		kObject_ID : Object_ID,
-		kObject_Lable : Object_Lable,
-		kObject_Properties : Object_Properties
+		kSr_No : arr[0],
+		kObject_ID : arr[1],
+		kObject_Lable : arr[2],
+		kObject_Properties : arr[3]
 	})
 	countRow += 1;
-	console.log(rowDict)
+	console.log(rowDict);
 
 }
 
-function modifyRow(rowDict,Sr_No,Object_ID,Object_Lable,Object_Properties)
+function modifyRow(rowDict,arr)
 {
+	console.log("called");
 	for(i=0;i<rowDict.length;i++){
-		if(rowDict[i].kSr_No == Sr_No){
-			rowDict[i].kObject_ID = Object_ID,
-			rowDict[i].kObject_Lable = Object_Lable,
-			rowDict[i].kObject_Properties = Object_Properties
+		if(rowDict[i].kSr_No == arr[0]){
+			rowDict[i].kObject_ID = arr[1],
+			rowDict[i].kObject_Lable = arr[2],
+			rowDict[i].kObject_Properties = arr[3]
 			break;
 		}
 	}
-	console.log(rowDict)
+	console.log(rowDict);
 
 }
 

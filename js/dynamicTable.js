@@ -1,6 +1,6 @@
 $(document).ready(function (){
 	includeJs('js/dataStructure.js');
-	$("#idTable tr:last input").on('focusout',function(e){
+	$("table").find("tr:last input").on('focusout',function(e){
 		newRow(e,$(this))
 		modfRow(e,$(this));
 	});
@@ -13,21 +13,21 @@ function newRow(e,ths)
 {
 	var flag = true;
 	arr = [];
-	var arg = $("#idTable tr:last input");
+	var arg = ths.parent().parent().find("input");
 	for(i=0;i<arg.length;i++){
 		if($(arg[i]).val()=="")
 			flag = false;
 		arr.push($(arg[i]).val());
 	}
-	console.log(arr);
+	name = ths.parent().parent().parent().attr("id");
 	if (flag){
-		addRow(rowDict,arr);
+		addTableRow(name,arr);
 		ths.parent().parent().find("input").unbind("focusout");
 		ths.parent().parent().find('input').on('focusout',function(e){
 			modfRow(e,$(this));
 		});
 
-		var obj = $("<tr class='enter'><td><input type='text' name='Sr_No' disabled value='"+(countRow-1)+"'></td><td><input type='text' name='Object_ID' ></td><td><input type='text' name='Object_Lable' ></td><td><input type='text' name='Object_Properties'></td></tr>")
+		var obj = $("<tr class='enter'><td><input type='text' name='Sr_No'></td><td><input type='text' name='Object_ID' ></td><td><input type='text' name='Object_Lable' ></td><td><input type='text' name='Object_Properties'></td></tr>")
 
 		obj.find('input').on('focusout',function(e){
 			newRow(e,$(this))
@@ -40,7 +40,7 @@ function newRow(e,ths)
 		obj.find('input').keydown(function(e){
 			keyEvents(e,$(this));
 		});
-		$('#idTable').append(obj);
+		ths.parent().parent().parent().append(obj);
 	}
 
 }
@@ -56,7 +56,7 @@ function keyEvents(e,ths)
 {
 	var keycode = e.which;
 	if(keycode == '13'){
-		ths.parent().parent().next().find('input:eq(1)').focus();
+		ths.parent().parent().next().find('input:eq(0)').focus();
 		var name = ths.attr('name');
 	}
 	if(keycode == '38'){
@@ -70,7 +70,7 @@ function keyEvents(e,ths)
 }
 function modfRow(e,ths)
 {
-	console.log("called");
+	c = ths.parent().parent().parent().find('tr').index(ths.parent().parent());
 	var arr = []
 	var flag = true;
 	var par = ths.parent().parent();
@@ -80,6 +80,8 @@ function modfRow(e,ths)
 			flag = false;
 		arr.push($(arg[i]).val());
 	}
+
+	name = ths.parent().parent().parent().attr('name');
 	if(flag)
-		modifyRow(rowDict,arr);
+		modifyRow(name,arr,c);
 }

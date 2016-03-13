@@ -27,9 +27,4 @@ function modifyRow(rowDict,Sr_No,Object_ID,Object_Lable,Object_Properties)
 	console.log(rowDict)
 
 }
-/*console.log(rowDict)*/
-	/*addRow(rowDict,2,3,4)*/
-	/*addRow(rowDict,12,13,14)*/
-	/*console.log(rowDict)*/
-	/*modifyRow(rowDict,1,10,15,20)*/
-	/*console.log(rowDict)*/
+

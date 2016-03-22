@@ -29,7 +29,7 @@ def genTableSelection(lsTable,jsFile,tableID):
     fo.write(ls)
     function = "\nfunction genTableOfTableNames(lsTable){\n"
     function = function + "for(i=0;i<lsTable.length;i++){\n"
-    function = function + "$('#lsTable').append('<tr><td><button>'+lsTable[i]+' </button></td></tr>')\n}\n}"
+    function = function + "$('#lsTable').append('<tr><td> <select> <option> '+lsTable[i]+'</option> </select> </td></tr>')\n}\n}"
     fo.write(function)
     fo.close()
 

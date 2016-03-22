@@ -23,6 +23,6 @@ lsTable = ['doors',
  ]
 function genTableOfTableNames(lsTable){
 for(i=0;i<lsTable.length;i++){
-$('#lsTable').append('<tr><td><button>'+lsTable[i]+' </button></td></tr>')
+$('#lsTable').append('<tr><td> <select> <option> '+lsTable[i]+'</option> </select> </td></tr>')
 }
 }

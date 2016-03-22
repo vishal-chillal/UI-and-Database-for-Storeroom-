@@ -1,7 +1,6 @@
 import ConfigParser
 import sys
 
-
 def genTable(name,columns,attr):
     table_tag = "<table id=\""+name+"\" name=\""+name+"\">\n"
     header = '<tr class="header_row">'
@@ -16,14 +15,9 @@ def genTable(name,columns,attr):
 
     return(str+'\n<br>')
 
-
-
-
-
 Config = ConfigParser.ConfigParser()
 Config.read(sys.argv[1])
 html_file = sys.argv[2]
-
 
 
 file = open(html_file,"a")
@@ -35,6 +29,3 @@ for table in Config.sections():
 
 file.write("</body>\n</html>\n")
 file.close()
-
-
-

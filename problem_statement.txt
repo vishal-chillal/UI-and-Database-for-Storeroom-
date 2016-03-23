@@ -1,0 +1,20 @@
+﻿Problem Statement:
+	1. We have to write program which will able to generate javascript file and html page.
+	2. Input to that program is through file. That file contains rows,columns and DB socket with view.
+	3. First show all the tables from database that are available to user.
+	4. Then from those tables, user should be able to choose any one table for selection.
+	5. Selected table should be shown in below text-field.
+	6. by clicking on submit button, user will be redirected to new page where previously selected table is shown.
+	7. On the redirected page, columns of table, its type and selection box will be shown to user.
+	8. User will able to multiselect the columns of selected table and can toggle its selection.
+	9. All the selected columns will be shown to user in text fields.
+	10. After submitting the selection those text-filds will be taken as input to generate a table from it.
+	11. That table will be shown to user and it will able to edit/insert/delete entries to column.
+	12. Make UI user-friendly and Minimization of key-stroke as much as you can.
+	13. Keys:
+			[ Shift + TAB ] --- Change focus to left column
+			[TAB] --- Change focus to right column
+			[UP arrow ] --- change focus to upper row
+			[DOWN arrow] --- Change focus to below row
+			[F3] --- select/deselect all selection
+			[F4] --- invert all selection

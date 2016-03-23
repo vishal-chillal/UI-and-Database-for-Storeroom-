@@ -1,14 +1,13 @@
 $(document).ready(function (){
 	genTableOfTableNames(lsTable);
-	$('#tableNames').find('input').first().focus();
+	$('#lsTable').find('input').first().focus();
 	$("input").keydown(function(e){
-		var x = $(this).val();
 		handleKeyEvent(e,$(this));
 	});
 	$('.submitButton').click(function(e){
 		if($('#selectionBox').val()!=""){
 			gotoSelectTupple();
-		    window.location="tupple.html";
+		    window.location="tupples.html";
 		}
 	});
 });
@@ -34,11 +33,4 @@ function handleKeyEvent(e,ths)
 		next = ths.parent().parent().next()
 		next.find('input').focus();
 	}
-}
-
-function includeJs(path)
-{
-	var imported = document.createElement('script');
-	imported.src = path;
-	document.head.appendChild(imported);
 }

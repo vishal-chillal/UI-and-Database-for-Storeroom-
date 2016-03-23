@@ -79,7 +79,6 @@ def createLs(ts):
 def getTuppleValues(lsTupple,jsFile,dbname,user):
     conn = psycopg2.connect("dbname="+dbname+" user="+user)
     cur = conn.cursor()
-#"[[table,[[tup1,[val1,val2]]]]]"
     ps = "tupValLs = ["
     for i in lsTupple:
         ps = ps + "['"+i[0]+"',"

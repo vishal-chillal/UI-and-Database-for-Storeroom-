@@ -1,0 +1,11 @@
+[tableNames]
+tableId: lsTable
+jsFile: js/tableJs.js
+
+[tupples]
+tableId: tupplesTable
+jsFile:js/tupJs.js
+
+[editTable]
+tableId: editTable
+jsFile: js/editJs.js

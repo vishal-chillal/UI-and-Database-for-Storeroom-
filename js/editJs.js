@@ -1,5 +1,4 @@
 $(document).ready(function (){
-
 	getEditTable(localStorage.table,localStorage.tupple,tupValLs);
 	$('#editTable').find('tr').first().find('input').focus();
 	addNewRowBelow($('#editTable').find('tr').first().find('input'));
@@ -7,7 +6,7 @@ $(document).ready(function (){
 		handleKeyEvent(e,$(this));
 	});
 	$('.submitButton').click(function(e){
-		    window.location="index.html";
+		    window.location="tableNames.html";
 	});
 });
 
@@ -34,14 +33,6 @@ function addNewRowBelow(ths){
 function handleKeyEvent(e,ths)
 {
 	var keycode = e.which;
-	if(keycode == '32'){
-		if(ths.parent().hasClass('select'))
-			ths.parent().removeClass('select')
-		else
-			ths.parent().addClass('select')
-
-	}
-
 	if(keycode == '13'){
 		addNewRowBelow(ths);
 	}
@@ -63,13 +54,6 @@ function handleKeyEvent(e,ths)
 	}
 }
 
-function includeJs(path)
-{
-	var imported = document.createElement('script');
-	imported.src = path;
-	document.head.appendChild(imported);
-}
-
 function getEditTable(tableName,tupLs,tupValLs){
 	tupLs = tupLs.split(",");
 	column = ""
@@ -82,7 +66,6 @@ function getEditTable(tableName,tupLs,tupValLs){
 		if(tuppleLs[i][0]==tableName){
 			for(j=0;j<tupLs.length;j++){
 				for(k=0;k<tupValLs[i][1].length;k++){
-					/*if(tupLs[j]==tupValLs[i][1][k]){*/
 					if(tupValLs[i][1][k][0]==tupLs[j])
 						rowAttr.push(tupValLs[i][1][k][1]);
 				}

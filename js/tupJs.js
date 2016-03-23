@@ -76,9 +76,3 @@ function invertSel(){
 			$(this).addClass('select');
 	});
 }
-function includeJs(path)
-{
-	var imported = document.createElement('script');
-	imported.src = path;
-	document.head.appendChild(imported);
-}

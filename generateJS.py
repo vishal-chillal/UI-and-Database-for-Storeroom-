@@ -33,7 +33,7 @@ def getTableTupples(lsTable,dbname,user):
     conn.close()
     return table_tupple
 
-def genTableSelection(lsTable,jsFile,tableID):
+def genTableSelection(lsTable,jsFile):
     fo = open(jsFile,"a")
     #genetating list of table names in js file
     ls = 'lsTable = ['
@@ -107,4 +107,4 @@ lsTable = getLsTable(name,user)
 lsTupple = getTableTupples(lsTable,name,user)
 writeTuppleLs('js/listTable.js',lsTupple);
 getTuppleValues(lsTupple,'js/listTable.js',name,user)
-genTableSelection(lsTable,'js/listTable.js','abc')
+genTableSelection(lsTable,'js/listTable.js')

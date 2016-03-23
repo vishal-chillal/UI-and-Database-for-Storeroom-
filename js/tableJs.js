@@ -1,5 +1,6 @@
 $(document).ready(function (){
 	genTableOfTableNames(lsTable);
+	$('#tableNames').find('input').first().focus();
 	$("input").keydown(function(e){
 		var x = $(this).val();
 		handleKeyEvent(e,$(this));
@@ -14,12 +15,14 @@ $(document).ready(function (){
 
 function gotoSelectTupple(){
 	localStorage.table = $('#selectionBox').val();
-	alert(localStorage.table);
 }
 
 function handleKeyEvent(e,ths)
 {
 	var keycode = e.which;
+	if(keycode == '13'){
+		$('.submitButton').click();
+	}
 	if(keycode == '32'){
 		$('#selectionBox').val(ths.val());
 	}

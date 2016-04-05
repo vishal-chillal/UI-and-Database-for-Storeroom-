@@ -1,0 +1,14 @@
+psqlConnect.py :
+	This file takes container or noncontainer id and 6 wallids as
+parameters. It checks for wall ids in abstractwall table and checks that
+wallids are not already referenced by containerconcretetypefaces or
+noncontainerconcretetypefaces.
+	If validations are passed then the record is inserted in the table
+containerconcretetypefaces or noncontainerconcretetypefaces according to
+command line parameters. The last argument indicates wheather the record is to
+be inserted in containerconcretetypefaces or noncontainerconcretetypefaces.
+
+Execution :
+	python psqlConnect.py
+<containerconcretetypeid/noncontainerconcretetypeid> <wallid1> <wallid2> ..
+<wallid6> <0/1>

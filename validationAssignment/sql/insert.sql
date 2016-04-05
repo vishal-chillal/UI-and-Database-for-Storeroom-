@@ -1,3 +1,8 @@
+create trigger checkWall before insert on walldoor for each row
+begin
+declare wl integer;
+begin select count(*) into wl from walldoor where 
+
 insert into objects values('nc1'),('nc2'),('nc3'),('nc4'),('nc5'),('c1'),('c2'),('c3'),('c4'),('c5');
 insert into abstractDoor values('d1',200,100,55,60,100),('d2',200,100,55,60,100),('d3',200,100,55,60,100),('d4',200,100,55,60,100),('d5',60,54,10,10,100);
 insert into types values('nct1','beam','concrete beam'),('nct2','bench','wooden'),('nct3','switch',''),('nct4','amplifier',''),('ct1','ampBox',''),('ct2','classRoom',''),('ct3','chalkBox','');

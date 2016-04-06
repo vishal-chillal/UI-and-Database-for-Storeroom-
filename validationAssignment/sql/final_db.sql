@@ -111,8 +111,8 @@ create table nonContainerObjects (
 );--objectId should be of container
 
 create table directChild_parent(
-    childID varchar(10) references objects(objectID),
-    parentID varchar(10) references objects(objectID) check(parentID like 'c%'),
+    childID varchar(10) references types(typeID),
+    parentID varchar(10) references containerConcreteTypes(containerConcreteTypeID) check(parentID like 'c%'),
     DisplacementAB integer check(DisplacementAB>0), 
     DisplacementAD integer check(DisplacementAD>0), 
     DisplacementAE integer check(DisplacementAE>0), 

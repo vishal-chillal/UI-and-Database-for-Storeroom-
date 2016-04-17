@@ -11,8 +11,8 @@ for line in fp:
         file.append(line)
 
 def fnConnectPsql():
-    sDbname = 'saurabh'
-    sUser = 'saurabh'
+    sDbname = 'vishal'
+    sUser = 'vishal'
     try:
         conn = psycopg2.connect("dbname={} user={}".format(sDbname, sUser))
         conn.autocommit = True
@@ -61,8 +61,6 @@ def checkWallDoors(query):
             except psycopg2.Error as e:
                 print "Unable to insert!"
                 print e.pgerror
-
-
 
 cur = fnConnectPsql()
 

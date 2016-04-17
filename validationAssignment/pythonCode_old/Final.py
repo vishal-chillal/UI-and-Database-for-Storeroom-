@@ -11,8 +11,8 @@ for line in fp:
         file.append(line)
 
 def fnConnectPsql():
-    sDbname = 'saurabh'
-    sUser = 'saurabh'
+    sDbname = 'vishal'
+    sUser = 'vishal'
     try:
         conn = psycopg2.connect("dbname={} user={}".format(sDbname, sUser))
         conn.autocommit = True

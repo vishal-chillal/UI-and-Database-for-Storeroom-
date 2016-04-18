@@ -21,8 +21,8 @@ for line in fp:
 '''
     Requirment:-Database  connectivity
     Input:- Null Output:- cursor
-    Functionality:- connect psql database and return cursor
-                    on success or prints error on failure.
+    Functionality:- connect psql database by trying to create cursor
+                    and return cursor on success or prints error on failure.
 
 '''
 

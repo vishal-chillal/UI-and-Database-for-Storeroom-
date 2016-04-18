@@ -22,11 +22,29 @@ create table types (typeID varchar(10) primary key check(typeID like 'nct%' OR t
 
 create table containerConcreteTypes (containerConcreteTypeId varchar(10) references types(typeID) UNIQUE check(containerConcreteTypeID like 'ct%'),containerLengthAB integer check(containerLengthAB>0),containerLengthAD integer check(containerLengthAD>0),containerLengthAE integer check(containerLengthAE>0),containerThickness integer check(containerThickness>0),userObjectCommentGlobal varchar(40));
 
-create table abstractDoor(doorID varchar(10) primary key check(doorID like 'd%'),doorLengthAB integer check(DoorLengthAB>0),doorLengthAD integer check(DoorLengthAD>0),doorColorR integer check(doorColorR>=0 AND doorColorR<=255),doorColorG integer check(doorColorG>=0 AND doorColorG<=255),doorColorB integer check(doorColorB>=0 AND doorColorB<=255));
+create table abstractDoor(
+doorID varchar(10) primary key check(doorID like 'd%'),
+doorLengthAB integer check(DoorLengthAB>0),doorLengthAD integer check(DoorLengthAD>0),
+doorColorR integer check(doorColorR>=0 AND doorColorR<=255),
+doorColorG integer check(doorColorG>=0 AND doorColorG<=255),
+doorColorB integer check(doorColorB>=0 AND doorColorB<=255));
 
-create table abstractWall(WallID varchar(10) primary key,WallLengthAB integer check(WallLengthAB>0),WallLengthAD integer check(WallLengthAD>0),WallColorR integer check(WallColorR>=0 AND WallColorR<=255),WallColorG integer check(WallColorG>=0 AND WallColorG<=255),WallColorB integer check(WallColorB>=0 AND WallColorB<=255),userWallComment varchar(40));
+create table abstractWall(
+WallID varchar(10) primary key,
+WallLengthAB integer check(WallLengthAB>0),
+WallLengthAD integer check(WallLengthAD>0),
+WallColorR integer check(WallColorR>=0 AND WallColorR<=255),
+WallColorG integer check(WallColorG>=0 AND WallColorG<=255),
+WallColorB integer check(WallColorB>=0 AND WallColorB<=255),
+userWallComment varchar(40));
 
-create table WallDoor(wallID varchar(10) references abstractWall(WallID),doorID varchar(10) references abstractDoor(doorID) UNIQUE,DisplacementAB integer check(DisplacementAB>0),DisplacementAD integer check(DisplacementAD>0),orientation varchar(4) check(orientation like 'ABCD' OR orientation like 'ABCD' OR orientation like 'ABCD' OR orientation like 'ABCD' OR orientation like 'DCBA' OR orientation like 'DABC' OR orientation like 'CBAD' ),primary key(wallID,doorID));    
+create table WallDoor(
+wallID varchar(10) references abstractWall(WallID) ON UPDATE CASCADE ON DELETE CASCADE,
+doorID varchar(10) references abstractDoor(doorID) ON UPDATE CASCADE ON DELETE CASCADE UNIQUE,
+primary key(wallID,doorID),
+DisplacementAB integer check(DisplacementAB>0),
+DisplacementAD integer check(DisplacementAD>0),
+orientation varchar(4) check(orientation like 'ABCD' OR orientation like 'ABCD' OR orientation like 'ABCD' OR orientation like 'ABCD' OR orientation like 'DCBA' OR orientation like 'DABC' OR orientation like 'CBAD'));
 
 create table containerConcreteTypeFaces (containerConcreteTypeId varchar(10) references containerConcreteTypes (containerConcreteTypeId) UNIQUE,containerConcreteRoof varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,containerConcreteFloor varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,containerConcreteRight varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,containerConcreteLeft varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,containerConcreteFront varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,containerConcreteBack varchar(10) references abstractWall (WallID) NOT NULL UNIQUE);
 

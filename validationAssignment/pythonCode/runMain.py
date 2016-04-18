@@ -45,6 +45,12 @@ def fnConnectPsql():
 
 
 def checkWallDoors(query):
+
+    def cordCheck(p1,p2):
+        if (p1[0]>=p2[0] and p1[1]>=p2[1]):
+            return True
+        else:
+            return False
     ln = query[4]
     parallelToAB = ['AB', 'CD', 'BA', 'DC']
     parallelToAD = ['AD', 'CB', 'DA', 'BC']
@@ -53,24 +59,39 @@ def checkWallDoors(query):
     ln = map(lambda x:x[1:],ln)
 
     for ins in ln:
+        flag = 0
         inst = ins.split(',')
+        print "wall ",ins
         wall = inst[0]
         door = inst[1]
+        disp = (int(inst[2]),int(inst[3]))
         query_wall = "select WallLengthAB,WallLengthAD from abstractWall where wallID="+wall+";"
         query_door = "select DoorLengthAB,DoorLengthAD from abstractDoor where doorID="+door+";"
         cur.execute(query_wall)
         wallDims = cur.fetchall()[0]
         cur.execute(query_door)
         doorDims = cur.fetchall()[0]
-        flag = 0
-        line = ins.split(',')
-        if(line[4][1:3] in parallelToAB):
-            if(wallDims[0]<doorDims[0] or wallDims[1]<doorDims[1]):
-                flag=1
-        else:
-            if(wallDims[0]<doorDims[1] or wallDims[1]<doorDims[0]):
+        orientation = inst[4]
+        orientation = orientation[1:len(orientation)-1]
+        c1 = wallDims
+        if(orientation=='ABCD'):
+            c2 = (doorDims[0]+disp[0],doorDims[1]+disp[1])
+            if(cordCheck(c1,disp) and cordCheck(c1,c2)):
                 flag = 1
-        if(flag==1):
+        elif(orientation=='DABC'):
+            c2 = (doorDims[0]-disp[0],doorDims[1]+disp[1])
+            if(cordCheck(c1,disp) and cordCheck((0,0),c2)):
+                flag = 1
+        elif(orientation=='CDAB'):
+            c2 = (doorDims[0]-disp[0],doorDims[1]-disp[1])
+            if(cordCheck(c2,(0,0)) and cordCheck(c1,disp)):
+                flag = 1
+        elif(orientation=='CDAB'):
+            c2 = (doorDims[0]+disp[0],doorDims[1]-disp[1])
+            if(cordCheck(c1,disp) and cordCheck(c2,(0,0))):
+                flag = 1
+
+        if(flag==0):
             print "Door cannot fit on wall,exceeding dimensions"
             return 0
         else:

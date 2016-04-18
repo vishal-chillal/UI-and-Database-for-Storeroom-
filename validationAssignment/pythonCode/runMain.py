@@ -1,4 +1,14 @@
 #!/usr/bin/python
+'''
+VAlidations:
+1. Check door displacement w.r.t wall dimensions
+2. Checking volume of container for new child
+3. Checking compatibility of walls of object faces
+
+'''
+
+
+
 import psycopg2
 import sys
 import ConfigParser

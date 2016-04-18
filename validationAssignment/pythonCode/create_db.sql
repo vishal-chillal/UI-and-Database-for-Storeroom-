@@ -4,7 +4,7 @@ VAlidations:
 2. One object cannot be child of two parent.
 3. Uniqueness Off wall withing that column.
 
-Total No Of Tables: 17
+Total No Of Tables: 21
 */
 
 
@@ -13,18 +13,23 @@ drop table IF EXISTS nonContainerObjectProperties CASCADE;
 drop table IF EXISTS nonContainerObjects CASCADE;
 drop table IF EXISTS containerObjectProperties CASCADE;
 drop table IF EXISTS containerObjects CASCADE;
+drop table IF EXISTS nonContainerConcreteTypeProperties CASCADE;
+drop table IF EXISTS containerConcreteTypeProperties CASCADE;
 drop table IF EXISTS unitList CASCADE;
 drop table IF EXISTS properties CASCADE;
 drop table IF EXISTS containerConcreteTypeFaces CASCADE; 
 drop table IF EXISTS containerConcreteTypes CASCADE;
 drop table IF EXISTS nonContainerConcreteTypeFaces CASCADE; 
 drop table IF EXISTS nonContainerConcreteTypes CASCADE;
+drop table IF EXISTS typeInheritance CASCADE;
 drop table IF EXISTS types CASCADE;
 drop table IF EXISTS objects CASCADE;
 drop table IF EXISTS propertyTypes CASCADE;
 drop table IF EXISTS WallDoor CASCADE;
 drop table IF EXISTS abstractWall CASCADE;
 drop table IF EXISTS abstractDoor CASCADE;
+drop table IF EXISTS physicalEntities CASCADE;
+
 
 
 --Only allow objectID which starts from 'c':Container  or 'nc':NonContainer
@@ -35,6 +40,12 @@ create table types(
 typeID varchar(10) primary key check(typeID like 'nct%' OR typeID like 'ct%'),
 typeName varchar(20) NOT NULL,
 description varchar(40));
+
+--Allows superTypeID which starts from 'ct':contaioner
+create table typeInheritance(
+superTypeID varchar(10) references types check(superTypeID like 'ct%'),
+subTypeID varchar(10) references types,
+primary key (superTypeID,subTypeID));
 
 --Only allow typeID which starts from 'd'
 --Dimesions must be positive integers
@@ -106,8 +117,13 @@ nonContainerConcreteLeft varchar(10) references abstractWall (WallID) NOT NULL U
 nonContainerConcreteFront varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
 nonContainerConcreteBack varchar(10) references abstractWall (WallID) NOT NULL UNIQUE);
 
+create table physicalEntities(
+physicalEntityID text primary key,
+entityName text NOT NULL);
+
 create table propertyTypes(
 propertyType varchar(10) primary key check(propertyType like 'pT%'),
+physicalEntityID text references physicalEntities unique,
 userDescription varchar(40));
 
 create table properties(
@@ -135,6 +151,28 @@ create table directChild_parent (childID varchar(10) references types(typeID),pa
 create table nonContainerObjectProperties (objectID varchar(10) references nonContainerObjects(objectID),propertyID varchar(10) references properties(propertyID),propertyValue varchar(10) NOT NULL,measurementUnitID varchar(10) references unitList(unitID),userCommentLocal varchar(10),userLabel varchar(10),primary key(objectID, propertyID));
 
 create table containerObjectProperties (objectID varchar(10) references containerObjects(objectID),propertyID varchar(10) references properties(propertyID),propertyValue varchar(10) NOT NULL,measurementUnitID varchar(10) references unitList(unitID),userCommentLocal varchar(10),userLabel varchar(10),primary key(objectID, propertyID));
+
+
+create table containerConcreteTypeProperties(
+	containerConcreteTypeId text references containerConcreteTypes(containerConcreteTypeId),
+	propertyID text references properties(propertyID),
+	propertyValue text NOT NULL,
+	measurementUnitID text references Unitlist(UnitID),
+	userCommentGlobal text,
+	primary key(containerConcreteTypeId, propertyID)
+);
+
+create table nonContainerConcreteTypeProperties(
+	nonContainerConcreteTypeId text references nonContainerConcreteTypes(nonContainerConcreteTypeId),
+	propertyID text references properties(propertyID),
+	propertyValue text NOT NULL,
+	measurementUnitID text references Unitlist(UnitID),
+	userCommentGlobal text,
+	primary key(nonContainerConcreteTypeId, propertyID)
+);
+
+
+
 
 create or replace function checkContainerWall() returns trigger as $checkContainerWall$
 begin

@@ -33,25 +33,25 @@ drop table IF EXISTS physicalEntities CASCADE;
 
 
 --Only allow objectID which starts from 'c':Container  or 'nc':NonContainer
-create table objects(objectID varchar(10) primary key check(objectID like 'nc%' OR objectID like 'c%'));
+create table objects(objectID varchar(20) primary key check(objectID like 'nc%' OR objectID like 'c%'));
 
 --Only allow typeID which starts from 'ct':typeContainer  or 'nct':typeNonContainer
 create table types(
-typeID varchar(10) primary key check(typeID like 'nct%' OR typeID like 'ct%'),
+typeID varchar(20) primary key check(typeID like 'nct%' OR typeID like 'ct%'),
 typeName varchar(20) NOT NULL,
 description varchar(40));
 
 --Allows superTypeID which starts from 'ct':contaioner
 create table typeInheritance(
-superTypeID varchar(10) references types check(superTypeID like 'ct%'),
-subTypeID varchar(10) references types,
+superTypeID varchar(20) references types check(superTypeID like 'ct%'),
+subTypeID varchar(20) references types,
 primary key (superTypeID,subTypeID));
 
 --Only allow typeID which starts from 'd'
 --Dimesions must be positive integers
 --R,G,B values must bbe in the range from 0 to 255
 create table abstractDoor(
-doorID varchar(10) primary key check(doorID like 'd%'),
+doorID varchar(20) primary key check(doorID like 'd%'),
 doorLengthAB integer check(DoorLengthAB>0),
 doorLengthAD integer check(DoorLengthAD>0),
 doorColorR integer check(doorColorR>=0 AND doorColorR<=255),
@@ -62,7 +62,7 @@ doorColorB integer check(doorColorB>=0 AND doorColorB<=255));
 --Dimesions must be positive integers
 --R,G,B values must bbe in the range from 0 to 255
 create table abstractWall(
-WallID varchar(10) primary key check(WallID like 'WC%' or WallID like 'WNC%'),
+WallID varchar(20) primary key check(WallID like 'WC%' or WallID like 'WNC%'),
 WallLengthAB integer check(WallLengthAB>0),
 WallLengthAD integer check(WallLengthAD>0),
 WallColorR integer check(WallColorR>=0 AND WallColorR<=255),
@@ -74,8 +74,8 @@ userWallComment varchar(40));
 --Door must be unique
 --Displacement of door must be positive integer and Orientation must be within the given pattern
 create table WallDoor(
-doorID varchar(10) references abstractDoor(doorID) ON UPDATE CASCADE ON DELETE CASCADE UNIQUE,
-wallID varchar(10) references abstractWall(WallID) ON UPDATE CASCADE ON DELETE CASCADE check(WallID like 'WC%'),
+doorID varchar(20) references abstractDoor(doorID) ON UPDATE CASCADE ON DELETE CASCADE UNIQUE,
+wallID varchar(20) references abstractWall(WallID) ON UPDATE CASCADE ON DELETE CASCADE check(WallID like 'WC%'),
 primary key(wallID,doorID),
 DisplacementAB integer check(DisplacementAB>0),
 DisplacementAD integer check(DisplacementAD>0),
@@ -84,7 +84,7 @@ orientation varchar(4) check(orientation like 'ABCD' OR orientation like 'BCDA' 
 --Only allow containerConcreteTypeId which starts from 'ct':typeContainer, No repetation
 --All dimensions must be positive integer
 create table containerConcreteTypes(
-containerConcreteTypeId varchar(10) references types(typeID) UNIQUE check(containerConcreteTypeID like 'ct%'),
+containerConcreteTypeId varchar(20) references types(typeID) UNIQUE check(containerConcreteTypeID like 'ct%'),
 containerLengthAB integer check(containerLengthAB>0),
 containerLengthAD integer check(containerLengthAD>0),
 containerLengthAE integer check(containerLengthAE>0),
@@ -93,32 +93,32 @@ userObjectCommentGlobal varchar(40));
 
 --Faces(walls) must be unique in there columns, fron containerConcreteTypes
 create table containerConcreteTypeFaces(
-containerConcreteTypeId varchar(10) references containerConcreteTypes (containerConcreteTypeId) UNIQUE,
-containerConcreteRoof varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
-containerConcreteFloor varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
-containerConcreteRight varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
-containerConcreteLeft varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
-containerConcreteFront varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
-containerConcreteBack varchar(10) references abstractWall (WallID) NOT NULL UNIQUE);
+containerConcreteTypeId varchar(20) references containerConcreteTypes (containerConcreteTypeId) UNIQUE,
+containerConcreteRoof varchar(20) references abstractWall (WallID) NOT NULL UNIQUE,
+containerConcreteFloor varchar(20) references abstractWall (WallID) NOT NULL UNIQUE,
+containerConcreteRight varchar(20) references abstractWall (WallID) NOT NULL UNIQUE,
+containerConcreteLeft varchar(20) references abstractWall (WallID) NOT NULL UNIQUE,
+containerConcreteFront varchar(20) references abstractWall (WallID) NOT NULL UNIQUE,
+containerConcreteBack varchar(20) references abstractWall (WallID) NOT NULL UNIQUE);
 
 --Only allow nonContainerConcreteTypeId which starts from 'nct':typeNonContainer, No repetation
 --All dimensions must be positive integer
 create table nonContainerConcreteTypes(
-nonContainerConcreteTypeId varchar(10) references types(typeID) UNIQUE check(nonContainerConcreteTypeID like 'nct%'),
+nonContainerConcreteTypeId varchar(20) references types(typeID) UNIQUE check(nonContainerConcreteTypeID like 'nct%'),
 nonContainerLengthAB integer check(nonContainerLengthAB>0),
 nonContainerLengthAD integer check(nonContainerLengthAD>0),
 nonContainerLengthAE integer check(nonContainerLengthAE>0),
-userObjectCommentGlobal varchar(10));
+userObjectCommentGlobal varchar(20));
 
 --Faces(walls) must be unique in there columns, fron nonContainerConcreteTypes
 create table nonContainerConcreteTypeFaces(
-nonContainerConcreteTypeId varchar(10) references nonContainerConcreteTypes(nonContainerConcreteTypeId) UNIQUE,
-nonContainerConcreteRoof varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
-nonContainerConcreteFloor varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
-nonContainerConcreteRight varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
-nonContainerConcreteLeft varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
-nonContainerConcreteFront varchar(10) references abstractWall (WallID) NOT NULL UNIQUE,
-nonContainerConcreteBack varchar(10) references abstractWall (WallID) NOT NULL UNIQUE);
+nonContainerConcreteTypeId varchar(20) references nonContainerConcreteTypes(nonContainerConcreteTypeId) UNIQUE,
+nonContainerConcreteRoof varchar(20) references abstractWall (WallID) NOT NULL UNIQUE,
+nonContainerConcreteFloor varchar(20) references abstractWall (WallID) NOT NULL UNIQUE,
+nonContainerConcreteRight varchar(20) references abstractWall (WallID) NOT NULL UNIQUE,
+nonContainerConcreteLeft varchar(20) references abstractWall (WallID) NOT NULL UNIQUE,
+nonContainerConcreteFront varchar(20) references abstractWall (WallID) NOT NULL UNIQUE,
+nonContainerConcreteBack varchar(20) references abstractWall (WallID) NOT NULL UNIQUE);
 
 --user must give entityName
 create table physicalEntities(
@@ -128,15 +128,15 @@ entityName text NOT NULL);
 --The physicalEntityID must be unique in table
 --Allows only PropertyType which starts with pT
 create table propertyTypes(
-propertyType varchar(10) primary key check(propertyType like 'pT%'),
+propertyType varchar(20) primary key check(propertyType like 'pT%'),
 physicalEntityID text references physicalEntities unique,
 userDescription varchar(40));
 
 --Allows only propertyID which starts with pr0
 create table properties(
-propertyID varchar(10) primary key check(propertyID like 'pr0%'),
+propertyID varchar(20) primary key check(propertyID like 'pr0%'),
 propertyName varchar(15) NOT NULL,
-propertyType varchar(10) references propertyTypes(propertyType),
+propertyType varchar(20) references propertyTypes(propertyType),
 userDescription varchar(40));
 
 --Allows only unitID which starts with Uid0
@@ -144,27 +144,27 @@ userDescription varchar(40));
 create table unitList(
 unitID varchar(15) primary key check(unitID like 'Uid0%'),
 unitName varchar(20) NOT NULL,
-unitAbbr varchar(10),
-propertyID varchar(10) references properties( propertyID));
+unitAbbr varchar(20),
+propertyID varchar(20) references properties( propertyID));
 
 --objectId should be from Container
 create table containerObjects(
-objectID varchar(10) references objects(objectID) UNIQUE check(objectID like 'c%'),
-containerConcreteTypeId varchar(10) references containerConcreteTypes (containerConcreteTypeId),
+objectID varchar(20) references objects(objectID) UNIQUE check(objectID like 'c%'),
+containerConcreteTypeId varchar(20) references containerConcreteTypes (containerConcreteTypeId),
 userLabel varchar(20),userObjectCommentLocal varchar(40));
 
 --objectId should be from nonContainer
 create table nonContainerObjects(
-objectID varchar(10) references objects(objectID) unique check(objectID like 'nc%'),
-nonContainerConcreteTypeId varchar(10) references nonContainerConcreteTypes (nonContainerConcreteTypeId),
+objectID varchar(20) references objects(objectID) unique check(objectID like 'nc%'),
+nonContainerConcreteTypeId varchar(20) references nonContainerConcreteTypes (nonContainerConcreteTypeId),
 userLabel varchar(20),userObjectCommentLocal varchar(40));
 
 --Child must be unique
 --parrent must be a container
 --displacement must be positive integer values
 create table directChild_parent(
-childID varchar(10) references types(typeID) unique,
-parentID varchar(10) references containerConcreteTypes(containerConcreteTypeID) check(parentID like 'c%'),
+childID varchar(20) references types(typeID) unique,
+parentID varchar(20) references containerConcreteTypes(containerConcreteTypeID) check(parentID like 'c%'),
 DisplacementAB integer check(DisplacementAB>0),
 DisplacementAD integer check(DisplacementAD>0),
 DisplacementAE integer check(DisplacementAE>0),
@@ -174,23 +174,23 @@ primary key(childId, parentID));
 --object ID must be from nonContainerObjectes
 --PropertyValue field must Not be empty
 create table nonContainerObjectProperties(
-objectID varchar(10) references nonContainerObjects(objectID),
-propertyID varchar(10) references properties(propertyID),
-propertyValue varchar(10) NOT NULL,
-measurementUnitID varchar(10) references unitList(unitID),
-userCommentLocal varchar(10),
-userLabel varchar(10),
+objectID varchar(20) references nonContainerObjects(objectID),
+propertyID varchar(20) references properties(propertyID),
+propertyValue varchar(20) NOT NULL,
+measurementUnitID varchar(20) references unitList(unitID),
+userCommentLocal varchar(20),
+userLabel varchar(20),
 primary key(objectID, propertyID));
 
 --object ID must be from conontainerObjectes
 --PropertyValue field must Not be empty
 create table containerObjectProperties(
-objectID varchar(10) references containerObjects(objectID),
-propertyID varchar(10) references properties(propertyID),
-propertyValue varchar(10) NOT NULL,
-measurementUnitID varchar(10) references unitList(unitID),
-userCommentLocal varchar(10),
-userLabel varchar(10),
+objectID varchar(20) references containerObjects(objectID),
+propertyID varchar(20) references properties(propertyID),
+propertyValue varchar(20) NOT NULL,
+measurementUnitID varchar(20) references unitList(unitID),
+userCommentLocal varchar(20),
+userLabel varchar(20),
 primary key(objectID, propertyID));
 
 --containerConcreteTypeID  must be from conontainerConcreteTypes

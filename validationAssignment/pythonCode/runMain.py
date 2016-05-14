@@ -272,7 +272,7 @@ if __name__ == '__main__':
             checkContainerWallFaces(query)
         elif(query[0]=='insert' and query[2]=="noncontainerConcretetypefaces"):
             checkNonContainerWallFaces(query)
-        else:
+        elif(query[0][0:2] != '--'):
             q = (" ".join(query))[:-1]
             if( q != ''):
                 try:

@@ -80,7 +80,7 @@ function addRow(valLs,tupLs){
 	for(j=0;j<valLs[0].length;j++){
 		row = ""
 		for(i=0;i<tupLs.length;i++){
-			row = row + '<td> <input type="text" value="'+valLs[j][i]+'"></td>'
+			row = row + '<td> <input type="text" value="'+valLs[i][j]+'"></td>'
 		}
 		$('#editTable').append('<tr>'+row+'</tr>;')
 	}

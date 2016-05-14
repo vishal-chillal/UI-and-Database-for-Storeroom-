@@ -4,10 +4,7 @@ VAlidations:
 1. Check door displacement w.r.t wall dimensions
 2. Checking volume of container for new child
 3. Checking compatibility of walls of object faces
-
 '''
-
-
 
 import psycopg2
 import sys
@@ -27,7 +24,6 @@ for line in fp:
     line = line.split(' ')
     if(line[0]!='\n'):
         file.append(line)
-
 '''
     Requirment:-Database  connectivity
     Input:- Null Output:- cursor
@@ -35,7 +31,6 @@ for line in fp:
                     and return cursor on success or prints error on failure.
 
 '''
-
 def fnConnectPsql():
     try:
         conn = psycopg2.connect("dbname={} user={}".format(sDbname, sUser))
@@ -45,6 +40,8 @@ def fnConnectPsql():
     except Exception as e:
         print e
 
+
+
 '''
     Requirment:- Wall and door compatibility
     Input:- query(wallID & doorID) Output:- success value/failure value
@@ -52,8 +49,6 @@ def fnConnectPsql():
                     of wall, on suceess fires query and on failure print error.
 
 '''
-
-
 def checkWallDoors(query):
 
     def cordCheck(p1,p2):
@@ -114,6 +109,8 @@ def checkWallDoors(query):
                 print e.pgerror
                 return 1
 
+
+
 '''
     Requirment:- parent and child compatibility
     Input:- query(parentID & childID) Output:- success value/failure value
@@ -121,7 +118,6 @@ def checkWallDoors(query):
                     of parent, on suceess fires query and on failure print error.
 
 '''
-
 def checkVolumeParentChild(query):
     parallelToAB = ['AB', 'CD', 'EF', 'GH', 'BA', 'DC', 'FE', 'HG']
     parallelToAD = ['AD', 'CB', 'EH', 'GF', 'DA', 'BC', 'HE', 'FG']
@@ -144,15 +140,12 @@ def checkVolumeParentChild(query):
             print "Error:Insertion sql"
             return
         parentDims = parentDims[0]
-        #print parentDims
         if(child[1] == 'n'):
             cur.execute(query_ncnt)
             dim_child = cur.fetchall()[0]
-            #print dim_child
         else:
             cur.execute(query_cnt + "{};".format(child))
             dim_child = cur.fetchall()[0]
-            #print dim_child
         orientation = inst[-1][1:-1]
         if orientation[:2] in parallelToAB:
             childAB = dim_child[0]

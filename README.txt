@@ -1,13 +1,16 @@
-1. open databaseConfig file and change db_name and user field
-2. make clean
-3. make
-4. open tableNames.html file in browser
-5. keys:
+There are 2 directories:
+	1. UI_code -- UI code for front end generation.
+	2. validationAssignment -- Database and valiadataion code.
 
-			[LEFT arrow] --- Change focus to left column
-			[RIGHT arrow] --- Change focus to right column
-			[UP arrow ] --- change focus to upper row
-			[DOWN arrow] --- Change focus to below row
-			[F2] --- select all selection
-			[F3] --- deselect all selection
-			[F4] --- invert all selection
+ - Both codes are README file included.
+ - Both source codes have respective Makefiles
+
+Remaining work:
+	1. PHP connection
+	2. few validations in database (ex. child-parent overlapping)
+
+Project Partners:
+	1. Saurabh Kukade 4132
+	2. Vishal Chillal 4109
+	3. Manasi Sonavne 4153
+

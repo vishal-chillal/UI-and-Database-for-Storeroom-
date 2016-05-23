@@ -1,6 +1,6 @@
 There are 2 directories:
-	1. UI_code -- UI code for front end generation.
-	2. validationAssignment -- Database and valiadataion code.
+	1. front_end -- UI code for front end generation.
+	2. back_end -- Database and valiadataion code.
 
  - Both codes are README file included.
  - Both source codes have respective Makefiles

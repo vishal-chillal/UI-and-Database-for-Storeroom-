@@ -5,7 +5,7 @@ require "config.php";
 $table_name="";
 $coulmnAttr= [];
 
-for($i=0;$i<)
+for($i=0;$i<5;$i++)
 $ret = pg_query($db, "create table if not exists objects");
 if(!$ret){
 	echo pg_last_error($db);

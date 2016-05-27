@@ -1,9 +1,8 @@
-
 <?php
 $host        = "host=127.0.0.1";
 $port        = "port=5432";
 $dbname      = "dbname=vishal";
-$credentials = "user=mw password=password";
+$credentials = "user=se1 password=password";
 
 $db = pg_connect( "$host $port $dbname $credentials"  );
 if(!$db){

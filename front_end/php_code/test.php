@@ -5,14 +5,17 @@ require "config.php";
 $table_name="";
 $coulmnAttr= [];
 
-for($i=0;$i<)
-$ret = pg_query($db, "create table if not exists objects");
+$ret = pg_query($db, 'create table if not exists abc(a int)');
 if(!$ret){
 	echo pg_last_error($db);
+	echo "chukatay";
 	exit;
 }
+else{
+$ret = pg_query($db, 'select * from objects');
+}
 while($row = pg_fetch_row($ret)){
-	echo "ID = ". $row[0] . "\n";
+	print "ID = ".$row[0]."\n";
 }
      echo "Operation done successfully\n";
  pg_close($db);

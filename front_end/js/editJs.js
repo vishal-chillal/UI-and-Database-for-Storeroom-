@@ -14,6 +14,8 @@ $(document).ready(function (){
 
 function checkChanges(old_table){
     old_vals= [];
+    insertEntries = [];
+    updateEntries = [];
     for(var i = 0; i < old_table[0].length; i++) {
 	tList = [];
 	for(var j = 0; j < old_table.length; j++) {
@@ -22,9 +24,29 @@ function checkChanges(old_table){
 	old_vals.push(tList);
     }
     var new_val = getValuesFromTable();
-    // now check va
+    // now check values
+    console.log(old_vals);
+    console.log(new_val);
+    if (old_vals.length < new_val.length){
+	for (var k = old_vals.length; k < new_val.length; k++){
+	    if(new_val[k][0] != '')
+		insertEntries.push(new_val[k]);
+	}
+    }
+    
+    for(var k = 0; k < old_vals.length; k++) {
+	for(var m = 0; m < new_val[k].length ; m++){
+	    if(new_val[k][m] != old_vals[k][m]){
+		updateEntries.push(new_val[k]);
+		break;
+	    }
+	}   
+    }
+    
+    console.log(insertEntries);
+    console.log(updateEntries);
+    
 }
-
 function getValuesFromTable(){
     new_vals= [];
     console.log($('#editTable tr').length);

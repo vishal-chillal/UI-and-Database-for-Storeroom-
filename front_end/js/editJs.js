@@ -1,6 +1,8 @@
+var passingArg = {"a":"asd","b":"asdad","d":"asdsad"}
 $(document).ready(function (){
     var old_table = getEditTable(localStorage.table,localStorage.tupple,tupValLs);
     $('#editTable').find('tr').first().find('input').focus();
+//    console.log($('#editTable').find('tr').first().find('input').focus();)
     addNewRowBelow($('#editTable').find('tr').first().find('input'));
     $("input").keydown(function(e){
 	handleKeyEvent(e,$(this));
@@ -14,8 +16,11 @@ $(document).ready(function (){
 
 function checkChanges(old_table){
     old_vals= [];
+    Entry = "";
+    Entry1 = "";
+    
     insertEntries = [];
-    updateEntries = [];
+    updateEntries = {};
     for(var i = 0; i < old_table[0].length; i++) {
 	tList = [];
 	for(var j = 0; j < old_table.length; j++) {
@@ -28,10 +33,26 @@ function checkChanges(old_table){
     console.log(old_vals);
     console.log(new_val);
     if (old_vals.length < new_val.length){
+	var kk = old_vals.length;
 	for (var k = old_vals.length; k < new_val.length; k++){
-	    if(new_val[k][0] != '')
-		insertEntries.push(new_val[k]);
+	    insertEntries.push(new_val[k]);
 	}
+	console.log(insertEntries);
+	var kstr = ""
+	Entry = '{';
+	for(var i = 0 ; i<insertEntries.length; i++){
+	    Entry1 = '"{';
+	    for( var k = 0 ; k<insertEntries[i].length; k++){
+		Entry1 += "'"+ k.toString()+ "':'" + insertEntries[i][k] + "'";
+	        if(k!=insertEntries[i].length-1)
+	    		Entry1 += ","; 
+	    }
+	    Entry1 += '}"'; 
+	    if(i!=insertEntries.length-1)
+	    	Entry1 += ","; 
+	    Entry += '"'+i.toString() +'":'+Entry1;
+	}
+	Entry += ',"len":'+insertEntries.length +',"table":"'+localStorage.table+'"}';
     }
     
     for(var k = 0; k < old_vals.length; k++) {
@@ -43,9 +64,21 @@ function checkChanges(old_table){
 	}   
     }
     
-    console.log(insertEntries);
-    console.log(updateEntries);
-    
+    console.log(Entry);
+//    console.log(updateEntries);
+//    console.log(JSON.parse(JSON.stringify(old_vals)));
+    var passingArg = JSON.parse(Entry);
+    $(function(){
+    	$.ajax({
+    	    url:"http://localhost/cgi-bin/first.py",
+    	    type: "post",
+    	    datatype: "json",
+    	    data: passingArg,
+    	    success: function(response){
+    		console.log(response);
+    	    }
+    	});
+    });
 }
 function getValuesFromTable(){
     new_vals= [];

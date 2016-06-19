@@ -1,28 +1,22 @@
 #!/usr/bin/python
+print "Content-type: text/text\n"
+
 '''
 VAlidations:
 1. Check door displacement w.r.t wall dimensions
 2. Checking volume of container for new child
 3. Checking compatibility of walls of object faces
+4. Checking valid door orientation and space left on the wall for new door
+5. Checking 
 '''
-
 import psycopg2
 import sys
 import ConfigParser
+import cgi, os, json
 
-file = []
-fileName = sys.argv[1]
-fp = open(fileName,'r')
 
-# Config = ConfigParser.ConfigParser()
-# Config.read(sys.argv[2])
-# sDbname = Config.get('database','db_name')
-# sUser = Config.get('database','db_user')
 
-for line in fp:
-    line = line.split(' ')
-    if(line[0]!='\n'):
-        file.append(line)
+##############################################################################
 '''
     Requirment:-Database  connectivity
     Input:- Null Output:- cursor
@@ -32,11 +26,12 @@ for line in fp:
 '''
 def fnConnectPsql():
     sDbname = 'vishal'
-    sUser = 'vishal'
-
-
+    sUser = 'se1'
+    sHost = 'localhost'
+    sPasswd = 'password'
     try:
-        conn = psycopg2.connect("dbname={} user={}".format(sDbname, sUser))
+        conn = psycopg2.connect("dbname={} user={} host={} password={}".format(sDbname, sUser,sHost,sPasswd))
+
         conn.autocommit = True
         cur = conn.cursor()
         return cur
@@ -69,15 +64,31 @@ def checkWallDoors(query):
     for ins in ln:
         flag = 0
         inst = ins.split(',')
-        print "wall ",ins
+
         wall = inst[0]
         door = inst[1]
-        disp = (int(inst[2]),int(inst[3]))
+        disp = (int(inst[2][1]),int(inst[3][1]))
         query_wall = "select WallLengthAB,WallLengthAD from abstractWall where wallID="+wall+";"
         query_door = "select DoorLengthAB,DoorLengthAD from abstractDoor where doorID="+door+";"
-        cur.execute(query_wall)
+        try:
+            cur.execute(query_wall)
+            cur.execute(query_door)
+            return 1
+        except psycopg2.Error as e:
+            print "Unable to insert! wall is not present in abstractWalls"
+            print e.pgerror
+            return 1
+        
         wallDims = cur.fetchall()[0]
-        cur.execute(query_door)
+        try:
+            cur.execute(query_wall)
+            cur.execute(query_door)
+            return 1
+        except psycopg2.Error as e:
+            print "Unable to insert! wall is not present in abstractDoors!!!"
+            print e.pgerror
+            return 1
+        
         doorDims = cur.fetchall()[0]
         orientation = inst[4]
         orientation = orientation[1:len(orientation)-1]
@@ -138,7 +149,7 @@ def checkVolumeParentChild(query):
         query_ncnt = "select nonContainerLengthAB,nonContainerLengthAD,nonContainerLengthAE from nonContainerConcreteTypes where nonContainerConcreteTypeId="+child+";"
         cur.execute(query_cnt + "{};".format(parrent))
         parentDims = cur.fetchall()
-        print parentDims[0]
+        #print parentDims[0]
         if(len(parentDims)==0):
             print "Error:Insertion sql"
             return
@@ -184,8 +195,8 @@ def checkVolumeParentChild(query):
                     except psycopg2.Error as e:
                         print "Unable to insert!"
                         print e.pgerror
-        print parentDims
-        print childAB, childAD, childAE
+        #print parentDims
+        #print childAB, childAD, childAE
         print "child cannot fit into parent"
 
 '''
@@ -259,28 +270,50 @@ def checkNonContainerWallFaces(query):
             print "Unable to insert!"
             print e.pgerror
 
-if __name__ == '__main__':
-    flag = 0
-    k = 0
+def mFunc(query):
     cur = fnConnectPsql()
-    for query in file:
-        k = k+1
-        print query
-        print k
-        if(query[0]=='insert' and query[2]=="directchild_parent"):
-            checkVolumeParentChild(query)
-        elif(query[0]=='insert' and query[2]=="walldoor"):
-            checkWallDoors(query)
-        elif(query[0]=='insert' and query[2]=="containerConcretetypefaces"):
-            checkContainerWallFaces(query)
-        elif(query[0]=='insert' and query[2]=="noncontainerConcretetypefaces"):
-            checkNonContainerWallFaces(query)
-        elif(query[0][0:2] != '--'):
-            q = (" ".join(query))[:-1]
-            if( q != ''):
-                try:
-                    cur.execute(q)
-                except psycopg2.Error as e:
-                    print "Unable to insert!"
-                    print e.pgerror
-
+    if(query[0]=='insert' and query[2]=="directchild_parent"):
+        checkVolumeParentChild(query)
+    elif(query[0]=='insert' and query[2]=="walldoor"):
+        checkWallDoors(query)
+    elif(query[0]=='insert' and query[2]=="containerConcretetypefaces"):
+        checkContainerWallFaces(query)
+    elif(query[0]=='insert' and query[2]=="noncontainerConcretetypefaces"):
+        checkNonContainerWallFaces(query)
+    elif(query[0][0:2] != '--'):
+        q = (" ".join(query))[:-1]
+        if( q != ''):
+            try:
+                print q
+                cur.execute(q)
+            except psycopg2.Error as e:
+                print "Unable to insert!!!! "
+                print e.pgerror
+        
+ls = ''
+data = cgi.FieldStorage()
+upTable = [data.getvalue("upTable")]
+table =  [data.getvalue("table")]
+query = ['insert','into'] + table + ['values']
+upQuery = ['update','into'] + table + ['where']
+for i in range( int(data.getvalue("len"))):
+    m = data.getvalue(str(i))
+    m = m.split('"')
+    m = m[0].strip('{')
+    m = m.strip('}')
+    m = m.split(',')
+    ab = []
+    for i in m:
+        i = i.split(':')
+        k = (i[1])
+        k = k.strip("'")
+        ab.append(k)
+    tupp = str(tuple(ab)).replace(',','')
+    
+    ls = ls+ tupp+","
+ls = ls[0:-1]
+ls = ls+";\n"
+ls = ls.replace(' ',',')
+query.append(ls)
+cur = fnConnectPsql()
+mFunc(query)

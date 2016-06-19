@@ -2,7 +2,6 @@ var passingArg = {"a":"asd","b":"asdad","d":"asdsad"}
 $(document).ready(function (){
     var old_table = getEditTable(localStorage.table,localStorage.tupple,tupValLs);
     $('#editTable').find('tr').first().find('input').focus();
-//    console.log($('#editTable').find('tr').first().find('input').focus();)
     addNewRowBelow($('#editTable').find('tr').first().find('input'));
     $("input").keydown(function(e){
 	handleKeyEvent(e,$(this));
@@ -18,9 +17,11 @@ function checkChanges(old_table){
     old_vals= [];
     Entry = "";
     Entry1 = "";
+    upEntry = "";
+    upEntry1 = "";
     
     insertEntries = [];
-    updateEntries = {};
+    updateEntries = [];
     for(var i = 0; i < old_table[0].length; i++) {
 	tList = [];
 	for(var j = 0; j < old_table.length; j++) {
@@ -30,19 +31,21 @@ function checkChanges(old_table){
     }
     var new_val = getValuesFromTable();
     // now check values
-    console.log(old_vals);
-    console.log(new_val);
+    //console.log(old_vals);
+    //console.log(new_val);
     if (old_vals.length < new_val.length){
-	var kk = old_vals.length;
 	for (var k = old_vals.length; k < new_val.length; k++){
+	    if(new_val[k] == '')
+		break;
 	    insertEntries.push(new_val[k]);
 	}
-	console.log(insertEntries);
-	var kstr = ""
 	Entry = '{';
 	for(var i = 0 ; i<insertEntries.length; i++){
 	    Entry1 = '"{';
 	    for( var k = 0 ; k<insertEntries[i].length; k++){
+		if(insertEntries[i][k] == '')
+		    break
+		
 		Entry1 += "'"+ k.toString()+ "':'" + insertEntries[i][k] + "'";
 	        if(k!=insertEntries[i].length-1)
 	    		Entry1 += ","; 
@@ -52,21 +55,46 @@ function checkChanges(old_table){
 	    	Entry1 += ","; 
 	    Entry += '"'+i.toString() +'":'+Entry1;
 	}
-	Entry += ',"len":'+insertEntries.length +',"table":"'+localStorage.table+'"}';
+	if(insertEntries.length >= 1)
+	    Entry += ',"len":'+insertEntries.length +',"table":"'+localStorage.table+'"';
     }
     
     for(var k = 0; k < old_vals.length; k++) {
 	for(var m = 0; m < new_val[k].length ; m++){
 	    if(new_val[k][m] != old_vals[k][m]){
+//		console.log(new_val[k]);
 		updateEntries.push(new_val[k]);
+		
 		break;
 	    }
 	}   
     }
-    
-    console.log(Entry);
-//    console.log(updateEntries);
-//    console.log(JSON.parse(JSON.stringify(old_vals)));
+    //////////////////////    
+    if(updateEntries.lenght >= 1){
+    	//upEntry = '{';
+	Entry+=','
+    	for(var i = 0 ; i<updateEntries.length; i++){
+    	    upEntry1 = '"{';
+    	    for( var k = 0 ; k<updateEntries[i].length; k++){
+    		upEntry1 += "'"+ k.toString()+ "':'" + updateEntries[i][k] + "'";
+    	        if(k!=updateEntries[i].length-1)
+    	    	    upEntry1 += ","; 
+    	    }
+    	    upEntry1 += '}"'; 
+    	    if(i!=updateEntries.length-1)
+    	    	upEntry1 += ","; 
+    	    Entry += '"'+i.toString()+i.toString() +'":'+upEntry1;
+    	}
+
+    	Entry += ',"upLen":'+updateEntries.length +',"upTable":"'+localStorage.table+'"}';
+    }
+    else if(updateEntries.lenght >=1 )
+	Entry+='"}';
+    else
+	Entry+='}';
+    /////////////
+    //
+    console.log(Entry)
     var passingArg = JSON.parse(Entry);
     $(function(){
     	$.ajax({
@@ -82,7 +110,6 @@ function checkChanges(old_table){
 }
 function getValuesFromTable(){
     new_vals= [];
-    console.log($('#editTable tr').length);
     // to get index name set i = 0;
     for (i = 1; i < $('#editTable tr').length; i++){
 	tList = []

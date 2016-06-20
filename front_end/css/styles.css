@@ -1,6 +1,7 @@
 table, th, td {
-    border: 1px solid black;
+    border: 5px solid black;
     border-collapse: collapse;
+    background-color:skyblue;
 }
 th, td {
     padding: 5px;
@@ -8,3 +9,4 @@ th, td {
 .select {
 	background-color:yellow;
 }
+

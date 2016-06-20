@@ -48,7 +48,7 @@ function checkChanges(old_table){
 		
 		Entry1 += "'"+ k.toString()+ "':'" + insertEntries[i][k] + "'";
 	        if(k!=insertEntries[i].length-1)
-	    		Entry1 += ","; 
+	    	    Entry1 += ","; 
 	    }
 	    Entry1 += '}"'; 
 	    if(i!=insertEntries.length-1)
@@ -62,15 +62,17 @@ function checkChanges(old_table){
     for(var k = 0; k < old_vals.length; k++) {
 	for(var m = 0; m < new_val[k].length ; m++){
 	    if(new_val[k][m] != old_vals[k][m]){
-//		console.log(new_val[k]);
+		//		console.log(new_val[k]);
 		updateEntries.push(new_val[k]);
-		
+		//		console.log(new_val[k],updateEntries.length);
 		break;
 	    }
 	}   
     }
-    //////////////////////    
-    if(updateEntries.lenght >= 1){
+    //////////////////////
+//    console.log(updateEntries,updateEntries.length,"abc");	    
+    if(updateEntries.length > 0){
+
     	//upEntry = '{';
 	Entry+=','
     	for(var i = 0 ; i<updateEntries.length; i++){
@@ -92,8 +94,7 @@ function checkChanges(old_table){
 	Entry+='"}';
     else
 	Entry+='}';
-    /////////////
-    //
+    ////////////
     console.log(Entry)
     var passingArg = JSON.parse(Entry);
     $(function(){
@@ -104,6 +105,7 @@ function checkChanges(old_table){
     	    data: passingArg,
     	    success: function(response){
     		console.log(response);
+		$('#outputBox').val(response);
     	    }
     	});
     });

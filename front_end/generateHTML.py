@@ -11,6 +11,9 @@ def generateHTML(fileName,jsFile,tableId):
     submit = ""
     if(fileName=='tableNames.html'):
         submit ='selected table = <input type="text" id="selectionBox" value="" disabled>\n'
+    if(fileName=='editTable.html'):
+        submit ='output of given operation = <input type="text" id="outPutBox" value="" disabled>\n'
+        
     submit = submit + '<button class="submitButton"> submit </button>\n</body>\n</html>\n'
     fo.write(header+body+submit);
     fo.close();

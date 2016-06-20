@@ -15,8 +15,6 @@ import ConfigParser
 import cgi, os, json
 
 
-
-##############################################################################
 '''
     Requirment:-Database  connectivity
     Input:- Null Output:- cursor
@@ -31,14 +29,11 @@ def fnConnectPsql():
     sPasswd = 'password'
     try:
         conn = psycopg2.connect("dbname={} user={} host={} password={}".format(sDbname, sUser,sHost,sPasswd))
-
         conn.autocommit = True
         cur = conn.cursor()
         return cur
     except Exception as e:
         print e
-
-
 
 '''
     Requirment:- Wall and door compatibility
@@ -122,8 +117,6 @@ def checkWallDoors(query):
                 print "Unable to insert!"
                 print e.pgerror
                 return 1
-
-
 
 '''
     Requirment:- parent and child compatibility
